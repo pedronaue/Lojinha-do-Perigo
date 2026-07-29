@@ -2,21 +2,13 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Lojinha do Perigo</title>
-
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#05070d">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Lojinha do Perigo">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="description" content="TCG • Decks • Trades — encomende decks, acompanhe pedidos e veja o financeiro.">
-
+<meta name="description" content="Sistema de pedidos, financeiro e créditos da Lojinha do Perigo">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -50,7 +42,6 @@
   h1,h2,h3,.display{font-family:'Orbitron',sans-serif;}
   ::selection{background:var(--violet);color:#fff;}
 
-  /* scanline ambient */
   body::before{
     content:"";
     position:fixed; inset:0;
@@ -59,7 +50,6 @@
     z-index:9999;
   }
 
-  /* corner-cut panel signature */
   .panel{
     position:relative;
     padding:2px;
@@ -74,7 +64,6 @@
     height:100%;
   }
 
-  /* topbar */
   #topbar{
     position:fixed; top:0; left:0; right:0; z-index:500;
     display:flex; align-items:center; justify-content:space-between;
@@ -93,7 +82,7 @@
   #hamburger span{display:block; width:22px; height:2px; background:var(--cyan); box-shadow:0 0 6px var(--cyan);}
   .brand{
     font-family:'Orbitron',sans-serif; font-weight:900; letter-spacing:2px;
-    font-size:15px; color:var(--text); text-transform:uppercase;
+    font-size:15px; text-transform:uppercase;
     background:linear-gradient(90deg,var(--cyan),var(--violet),var(--magenta));
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
@@ -115,8 +104,8 @@
   .btn.gold{border-color:rgba(255,207,77,0.6); background:rgba(255,207,77,0.10); color:#ffe9b0;}
   .btn.small{padding:6px 12px; font-size:11px;}
   .btn.danger{border-color:rgba(255,77,109,0.6); background:rgba(255,77,109,0.10);}
+  .btn:disabled{opacity:.4; cursor:not-allowed;}
 
-  /* nav drawer */
   #navDrawer{
     position:fixed; top:0; left:0; bottom:0; width:280px; z-index:600;
     background:linear-gradient(180deg,var(--bg3),var(--bg2));
@@ -178,18 +167,12 @@
   .credit-line .role{color:var(--magenta);}
   .credit-line.dec .role{color:var(--gold);}
 
-  .grid{display:grid; grid-template-columns:1fr; gap:18px; margin-top:22px;}
-  @media(min-width:640px){.grid.two{grid-template-columns:1fr 1fr;}}
-
-  /* modal / auth */
   .modal-overlay{
     position:fixed; inset:0; background:rgba(2,4,10,0.75); backdrop-filter:blur(4px);
     display:none; align-items:center; justify-content:center; z-index:1000; padding:20px;
   }
   .modal-overlay.open{display:flex;}
-  .modal-box{
-    width:100%; max-width:380px; position:relative;
-  }
+  .modal-box{width:100%; max-width:380px; position:relative;}
   .modal-close{
     position:absolute; top:-46px; right:0; width:36px; height:36px; border-radius:50%;
     border:1px solid var(--danger); background:rgba(255,77,109,0.12); color:var(--danger);
@@ -211,19 +194,12 @@
   .error-msg.show{display:block;}
   .full-btn{width:100%; margin-top:6px; text-align:center;}
 
-  /* wpp floating */
-  #wppFloat{position:fixed; bottom:22px; right:22px; z-index:400;}
-
-  /* financeiro */
   .stat-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:10px;}
   @media(min-width:560px){.stat-row{grid-template-columns:repeat(3,1fr);}}
-  .stat{
-    text-align:center; padding:18px 10px;
-  }
+  .stat{text-align:center; padding:18px 10px;}
   .stat .num{font-family:'Orbitron',sans-serif; font-size:26px; color:var(--gold); font-weight:900;}
   .stat .lbl{font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-top:4px;}
 
-  /* form encomendar */
   textarea{resize:vertical; min-height:70px;}
   .conf-msg{
     display:none; margin-top:16px; padding:14px; text-align:center; font-weight:700;
@@ -232,7 +208,6 @@
   }
   .conf-msg.show{display:block;}
 
-  /* sistema pedidos */
   .order-card{margin-bottom:16px;}
   .order-head{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;}
   .order-name-btn{
@@ -252,11 +227,10 @@
   .order-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;}
   .empty-state{text-align:center; color:var(--muted); padding:40px 10px; font-size:15px;}
 
-  #sistemaOverlay, #infoOverlay{
-    position:fixed; inset:0; z-index:800; background:var(--bg); display:none;
-    overflow-y:auto;
+  #sistemaOverlay, #infoOverlay, #financeiroOverlay{
+    position:fixed; inset:0; z-index:800; background:var(--bg); display:none; overflow-y:auto;
   }
-  #sistemaOverlay.open, #infoOverlay.open{display:block;}
+  #sistemaOverlay.open, #infoOverlay.open, #financeiroOverlay.open{display:block;}
   .fs-topbar{
     display:flex; justify-content:space-between; align-items:center; padding:16px 22px;
     border-bottom:1px solid rgba(45,226,255,0.25); position:sticky; top:0; background:var(--bg); z-index:5;
@@ -272,22 +246,37 @@
   .info-row span:first-child{color:var(--muted); text-transform:uppercase; font-size:12px; letter-spacing:1px;}
   .info-row span:last-child{color:var(--text); font-weight:600; text-align:right;}
 
+  .saldo-box{text-align:center; padding:10px;}
+  .saldo-box .val{font-family:'Orbitron',sans-serif; font-size:40px; font-weight:900; color:var(--ok);}
+  .saldo-box .val.neg{color:var(--danger);}
+  .saldo-box .lbl{font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); margin-top:6px;}
+
+  .mov-form{display:grid; grid-template-columns:1fr; gap:14px; margin-top:6px;}
+  @media(min-width:640px){.mov-form{grid-template-columns:1fr 1fr 1.4fr auto;}}
+
+  .conn-banner{
+    position:fixed; top:66px; left:0; right:0; z-index:490; text-align:center;
+    font-size:12px; letter-spacing:.5px; padding:8px 14px; font-weight:600;
+  }
+  .conn-banner.warn{background:rgba(255,77,109,0.15); color:#ffd0da; border-bottom:1px solid var(--danger);}
+  .conn-banner.ok{background:rgba(61,255,176,0.10); color:#c7ffe9; border-bottom:1px solid var(--ok);}
+
   footer{text-align:center; color:var(--muted); font-size:12px; padding:30px; letter-spacing:1px;}
 </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <div id="topbar">
   <div style="display:flex; align-items:center; gap:14px;">
     <button id="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
     <div class="brand">Lojinha do Perigo</div>
   </div>
   <div class="top-actions">
-    <button class="btn cyan small" id="installBtn" style="display:none;" onclick="installApp()">Instalar</button>
     <button class="btn gold small" onclick="openAuth('sistema')">Sistema</button>
   </div>
 </div>
+
+<div id="connBanner" class="conn-banner warn" style="display:none;"></div>
 
 <div id="navOverlay" onclick="toggleNav()"></div>
 <div id="navDrawer">
@@ -297,8 +286,6 @@
 </div>
 
 <main>
-
-  <!-- VIEW: HOME -->
   <div class="view active" id="view-home">
     <div class="hero">
       <h1>Lojinha do Perigo</h1>
@@ -328,7 +315,6 @@
     </div>
   </div>
 
-  <!-- VIEW: ENCOMENDAR -->
   <div class="view" id="view-encomendar">
     <div class="section-title">Encomendar</div>
     <div class="panel">
@@ -360,18 +346,16 @@
             <label>Carta de pagamento (ex: 123/321)</label>
             <input type="text" id="ordPagamento" placeholder="123/321" required>
           </div>
-          <button type="submit" class="btn cyan full-btn">Concluir</button>
+          <button type="submit" class="btn cyan full-btn" id="ordSubmitBtn">Concluir</button>
           <div class="conf-msg" id="ordConfirm">Pedido enviado com sucesso!</div>
         </form>
       </div>
     </div>
   </div>
-
 </main>
 
 <footer>© Lojinha do Perigo — sistema interno</footer>
 
-<!-- AUTH MODAL -->
 <div class="modal-overlay" id="authOverlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeAuth()">✕</button>
@@ -389,7 +373,6 @@
   </div>
 </div>
 
-<!-- EDIT MODAL -->
 <div class="modal-overlay" id="editOverlay">
   <div class="modal-box">
     <button class="modal-close" onclick="closeEdit()">✕</button>
@@ -404,13 +387,12 @@
           <label>Deckers</label>
           <input type="text" id="editDeckers">
         </div>
-        <button class="btn cyan full-btn" onclick="saveEdit()">Salvar</button>
+        <button class="btn cyan full-btn" id="editSaveBtn" onclick="saveEdit()">Salvar</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SISTEMA FULLSCREEN -->
 <div id="sistemaOverlay">
   <div class="fs-topbar">
     <div class="brand" style="font-size:13px;">Sistema de Pedidos</div>
@@ -419,27 +401,58 @@
   <div class="fs-content" id="ordersList"></div>
 </div>
 
-<!-- FINANCEIRO FULLSCREEN -->
-<div id="financeiroOverlay" style="position:fixed; inset:0; z-index:800; background:var(--bg); display:none; overflow-y:auto;">
+<div id="financeiroOverlay">
   <div class="fs-topbar">
     <div class="brand" style="font-size:13px;">Financeiro</div>
     <button class="fs-x" onclick="closeFinanceiro()">✕</button>
   </div>
   <div class="fs-content">
-    <div class="section-title">Resumo</div>
+    <div class="section-title">Saldo</div>
+    <div class="panel">
+      <div class="panel-inner saldo-box">
+        <div class="val" id="saldoValor">R$ 0,00</div>
+        <div class="lbl">Saldo atual</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:26px;">Registrar movimentação</div>
+    <div class="panel">
+      <div class="panel-inner">
+        <form class="mov-form" id="movForm" onsubmit="submitMovimento(event)">
+          <div class="field" style="margin-bottom:0;">
+            <label>Tipo</label>
+            <select id="movTipo" required>
+              <option value="entrada">Adicionar saldo</option>
+              <option value="saida">Retirar saldo</option>
+            </select>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Valor (R$)</label>
+            <input type="number" id="movValor" min="0" step="0.01" required>
+          </div>
+          <div class="field" style="margin-bottom:0;">
+            <label>Descrição</label>
+            <input type="text" id="movDescricao" placeholder="Ex: venda deck fogo">
+          </div>
+          <button type="submit" class="btn cyan" id="movSubmitBtn" style="align-self:end; height:47px;">Registrar</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:26px;">Pedidos</div>
     <div class="panel">
       <div class="panel-inner">
         <div class="stat-row" id="finStats"></div>
       </div>
     </div>
-    <div class="section-title" style="margin-top:26px;">Pedidos registrados</div>
+
+    <div class="section-title" style="margin-top:26px;">Histórico de movimentações</div>
     <div class="panel">
-      <div class="panel-inner" id="finOrdersList"></div>
+      <div class="panel-inner" id="movList"></div>
     </div>
   </div>
 </div>
 
-<!-- INFO PEDIDO FULLSCREEN -->
 <div id="infoOverlay">
   <div class="fs-topbar">
     <div class="brand" style="font-size:13px;">Detalhes do pedido</div>
@@ -454,16 +467,70 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+  // ======================================================================
+  // CONFIGURAÇÃO DO FIREBASE — troque pelos dados do SEU projeto Firebase
+  // (veja o README.md para o passo a passo de como criar e pegar esses dados)
+  // ======================================================================
+  const firebaseConfig = {
+    apiKey: "SUA_API_KEY_AQUI",
+    authDomain: "SEU_PROJETO.firebaseapp.com",
+    projectId: "SEU_PROJETO",
+    storageBucket: "SEU_PROJETO.appspot.com",
+    messagingSenderId: "SEU_SENDER_ID",
+    appId: "SEU_APP_ID"
+  };
+  // ======================================================================
+
   const PASSWORDS = { edit: "Pjnf2311", financeiro: "Naue2311", sistema: "Naue2311" };
   let pendingAction = null;
+  let db = null;
+  let firebaseReady = false;
+
+  const connBanner = document.getElementById('connBanner');
+  function showBanner(msg, type){
+    connBanner.textContent = msg;
+    connBanner.className = 'conn-banner ' + type;
+    connBanner.style.display = 'block';
+  }
+  function hideBannerSoon(){
+    setTimeout(()=>{ connBanner.style.display = 'none'; }, 3000);
+  }
+
+  async function initFirebase(){
+    if(firebaseConfig.apiKey === "SUA_API_KEY_AQUI"){
+      showBanner('⚠ Backend não configurado ainda — edite o firebaseConfig no index.html (veja o README.md).', 'warn');
+      disableWrites();
+      return;
+    }
+    try{
+      const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+      const firestore = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+      window.__fs = firestore;
+      const app = initializeApp(firebaseConfig);
+      db = firestore.getFirestore(app);
+      firebaseReady = true;
+      showBanner('✓ Conectado ao servidor compartilhado', 'ok');
+      hideBannerSoon();
+      startListeners();
+    }catch(err){
+      console.error(err);
+      showBanner('⚠ Não foi possível conectar ao servidor. Verifique sua internet e o firebaseConfig.', 'warn');
+      disableWrites();
+    }
+  }
+  function disableWrites(){
+    document.getElementById('ordSubmitBtn').disabled = true;
+    document.getElementById('editSaveBtn').disabled = true;
+    document.getElementById('movSubmitBtn').disabled = true;
+  }
 
   // ---------- NAV ----------
-  function toggleNav(){
+  window.toggleNav = function(){
     document.getElementById('navDrawer').classList.toggle('open');
     document.getElementById('navOverlay').classList.toggle('open');
   }
-  function showView(name){
+  window.showView = function(name){
     document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
     document.getElementById('view-'+name).classList.add('active');
     document.getElementById('navDrawer').classList.remove('open');
@@ -472,7 +539,7 @@
   }
 
   // ---------- AUTH ----------
-  function openAuth(action){
+  window.openAuth = function(action){
     pendingAction = action;
     const titles = { edit:"Editar créditos", financeiro:"Acesso Financeiro", sistema:"Acesso ao Sistema" };
     document.getElementById('authTitle').textContent = titles[action] || "Autenticação";
@@ -483,11 +550,11 @@
     document.getElementById('navOverlay').classList.remove('open');
     setTimeout(()=>document.getElementById('authPassInput').focus(), 50);
   }
-  function closeAuth(){
+  window.closeAuth = function(){
     document.getElementById('authOverlay').classList.remove('open');
     pendingAction = null;
   }
-  function checkAuth(){
+  window.checkAuth = function(){
     const val = document.getElementById('authPassInput').value;
     if(pendingAction && val === PASSWORDS[pendingAction]){
       const action = pendingAction;
@@ -499,104 +566,114 @@
       document.getElementById('authError').classList.add('show');
     }
   }
-  document.getElementById('authPassInput').addEventListener('keydown', e=>{ if(e.key==='Enter') checkAuth(); });
+  document.getElementById('authPassInput').addEventListener('keydown', e=>{ if(e.key==='Enter') window.checkAuth(); });
 
-  // ---------- EDIT CREDITS ----------
-  function getCredits(){
-    const c = localStorage.getItem('ldp_contribuidores') || 'Gustavo e João';
-    const d = localStorage.getItem('ldp_deckers') || 'Gustavo e Pedro Jorge';
-    return {c,d};
-  }
-  function renderCredits(){
-    const {c,d} = getCredits();
-    document.getElementById('contribuidoresText').innerHTML = '<span class="role">Contribuidores:</span> '+escapeHtml(c);
-    document.getElementById('deckersText').innerHTML = '<span class="role">Deckers:</span> '+escapeHtml(d);
-  }
   function escapeHtml(str){
-    const div = document.createElement('div'); div.textContent = str; return div.innerHTML;
+    const div = document.createElement('div'); div.textContent = str ?? ''; return div.innerHTML;
   }
-  function openEdit(){
-    const {c,d} = getCredits();
-    document.getElementById('editContribuidores').value = c;
-    document.getElementById('editDeckers').value = d;
+
+  // ---------- CRÉDITOS (compartilhado via Firestore) ----------
+  let currentCredits = { contribuidores: 'Gustavo e João', deckers: 'Gustavo e Pedro Jorge' };
+  function renderCredits(){
+    document.getElementById('contribuidoresText').innerHTML = '<span class="role">Contribuidores:</span> '+escapeHtml(currentCredits.contribuidores);
+    document.getElementById('deckersText').innerHTML = '<span class="role">Deckers:</span> '+escapeHtml(currentCredits.deckers);
+  }
+  window.openEdit = function(){
+    document.getElementById('editContribuidores').value = currentCredits.contribuidores;
+    document.getElementById('editDeckers').value = currentCredits.deckers;
     document.getElementById('editOverlay').classList.add('open');
   }
-  function closeEdit(){ document.getElementById('editOverlay').classList.remove('open'); }
-  function saveEdit(){
-    localStorage.setItem('ldp_contribuidores', document.getElementById('editContribuidores').value.trim());
-    localStorage.setItem('ldp_deckers', document.getElementById('editDeckers').value.trim());
-    renderCredits();
-    closeEdit();
+  window.closeEdit = function(){ document.getElementById('editOverlay').classList.remove('open'); }
+  window.saveEdit = async function(){
+    const contribuidores = document.getElementById('editContribuidores').value.trim();
+    const deckers = document.getElementById('editDeckers').value.trim();
+    if(!firebaseReady){ alert('Backend não conectado ainda.'); return; }
+    const fs = window.__fs;
+    try{
+      await fs.setDoc(fs.doc(db,'config','creditos'), { contribuidores, deckers, updatedAt: fs.serverTimestamp() }, { merge:true });
+      closeEdit();
+    }catch(err){
+      console.error(err);
+      alert('Não foi possível salvar. Tente novamente.');
+    }
   }
-  renderCredits();
 
-  // ---------- ORDERS ----------
-  function getOrders(){
-    return JSON.parse(localStorage.getItem('ldp_orders') || '[]');
-  }
-  function saveOrders(orders){
-    localStorage.setItem('ldp_orders', JSON.stringify(orders));
-  }
-  function submitOrder(e){
+  // ---------- PEDIDOS (compartilhado via Firestore) ----------
+  let ordersCache = [];
+  window.submitOrder = async function(e){
     e.preventDefault();
-    const orders = getOrders();
-    const order = {
-      id: Date.now(),
-      nome: document.getElementById('ordNome').value.trim(),
-      apto: document.getElementById('ordApto').value.trim(),
-      tipo: document.getElementById('ordTipo').value,
-      pagamento: document.getElementById('ordPagamento').value.trim(),
-      status: 'pendente',
-      data: new Date().toLocaleString('pt-BR')
-    };
-    orders.unshift(order);
-    saveOrders(orders);
-    document.getElementById('orderForm').reset();
-    const conf = document.getElementById('ordConfirm');
-    conf.classList.add('show');
-    setTimeout(()=>conf.classList.remove('show'), 3500);
+    if(!firebaseReady){ alert('Backend não conectado ainda.'); return; }
+    const fs = window.__fs;
+    const btn = document.getElementById('ordSubmitBtn');
+    btn.disabled = true;
+    try{
+      await fs.addDoc(fs.collection(db,'pedidos'), {
+        nome: document.getElementById('ordNome').value.trim(),
+        apto: document.getElementById('ordApto').value.trim(),
+        tipo: document.getElementById('ordTipo').value,
+        pagamento: document.getElementById('ordPagamento').value.trim(),
+        status: 'pendente',
+        createdAt: fs.serverTimestamp()
+      });
+      document.getElementById('orderForm').reset();
+      const conf = document.getElementById('ordConfirm');
+      conf.classList.add('show');
+      setTimeout(()=>conf.classList.remove('show'), 3500);
+    }catch(err){
+      console.error(err);
+      alert('Não foi possível enviar o pedido. Tente novamente.');
+    }finally{
+      btn.disabled = false;
+    }
   }
-
   function statusLabel(s){
     return s==='concluido' ? 'Concluído' : (s==='iniciado' ? 'Iniciado' : 'Pendente');
   }
-
+  function fmtDate(ts){
+    if(!ts) return '—';
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleString('pt-BR');
+  }
   function renderOrdersList(){
-    const orders = getOrders();
     const container = document.getElementById('ordersList');
-    if(orders.length === 0){
+    if(ordersCache.length === 0){
       container.innerHTML = '<div class="empty-state">Nenhum pedido registrado ainda.</div>';
       return;
     }
-    container.innerHTML = orders.map(o => `
+    container.innerHTML = ordersCache.map(o => `
       <div class="panel order-card">
         <div class="panel-inner">
           <div class="order-head">
-            <button class="order-name-btn" onclick="openInfo(${o.id})">&#8593; ${escapeHtml(o.nome)}</button>
+            <button class="order-name-btn" onclick="openInfo('${o.id}')">&#8593; ${escapeHtml(o.nome)}</button>
             <span class="status-tag status-${o.status}">${statusLabel(o.status)}</span>
           </div>
           <div class="order-meta"><b>Tipo:</b> ${escapeHtml(o.tipo)} &nbsp;•&nbsp; <b>Pagamento:</b> ${escapeHtml(o.pagamento)}</div>
           <div class="order-actions">
-            <button class="btn small" onclick="setStatus(${o.id},'iniciado')">Iniciar</button>
-            <button class="btn small" style="border-color:rgba(61,255,176,0.6); background:rgba(61,255,176,0.10);" onclick="setStatus(${o.id},'concluido')">Concluído</button>
+            <button class="btn small" onclick="setStatus('${o.id}','iniciado')">Iniciar</button>
+            <button class="btn small" style="border-color:rgba(61,255,176,0.6); background:rgba(61,255,176,0.10);" onclick="setStatus('${o.id}','concluido')">Concluído</button>
           </div>
         </div>
       </div>
     `).join('');
   }
-  function setStatus(id, status){
-    const orders = getOrders().map(o => o.id===id ? {...o, status} : o);
-    saveOrders(orders);
-    renderOrdersList();
+  window.setStatus = async function(id, status){
+    if(!firebaseReady) return;
+    const fs = window.__fs;
+    try{
+      await fs.updateDoc(fs.doc(db,'pedidos', id), { status });
+    }catch(err){
+      console.error(err);
+      alert('Não foi possível atualizar o status.');
+    }
   }
-  function openSistema(){
+  window.openSistema = function(){
     renderOrdersList();
     document.getElementById('sistemaOverlay').classList.add('open');
   }
-  function closeSistema(){ document.getElementById('sistemaOverlay').classList.remove('open'); }
+  window.closeSistema = function(){ document.getElementById('sistemaOverlay').classList.remove('open'); }
 
-  function openInfo(id){
-    const o = getOrders().find(x=>x.id===id);
+  window.openInfo = function(id){
+    const o = ordersCache.find(x=>x.id===id);
     if(!o) return;
     document.getElementById('infoGrid').innerHTML = `
       <div class="info-row"><span>Nome</span><span>${escapeHtml(o.nome)}</span></div>
@@ -604,59 +681,106 @@
       <div class="info-row"><span>Tipo do deck</span><span>${escapeHtml(o.tipo)}</span></div>
       <div class="info-row"><span>Carta de pagamento</span><span>${escapeHtml(o.pagamento)}</span></div>
       <div class="info-row"><span>Status</span><span>${statusLabel(o.status)}</span></div>
-      <div class="info-row"><span>Data do pedido</span><span>${o.data}</span></div>
+      <div class="info-row"><span>Data do pedido</span><span>${fmtDate(o.createdAt)}</span></div>
     `;
     document.getElementById('infoOverlay').classList.add('open');
   }
-  function closeInfo(){ document.getElementById('infoOverlay').classList.remove('open'); }
+  window.closeInfo = function(){ document.getElementById('infoOverlay').classList.remove('open'); }
 
-  // ---------- FINANCEIRO ----------
-  function openFinanceiro(){
-    const orders = getOrders();
-    const total = orders.length;
-    const concluidos = orders.filter(o=>o.status==='concluido').length;
-    const pendentes = orders.filter(o=>o.status==='pendente').length;
+  // ---------- FINANCEIRO (compartilhado via Firestore) ----------
+  let movsCache = [];
+  function brl(v){
+    return (v<0?'-':'') + 'R$ ' + Math.abs(v).toFixed(2).replace('.',',');
+  }
+  function renderFinanceiro(){
+    const saldo = movsCache.reduce((acc,m)=> acc + (m.tipo==='entrada' ? m.valor : -m.valor), 0);
+    const valEl = document.getElementById('saldoValor');
+    valEl.textContent = brl(saldo);
+    valEl.classList.toggle('neg', saldo < 0);
+
+    const total = ordersCache.length;
+    const concluidos = ordersCache.filter(o=>o.status==='concluido').length;
+    const pendentes = ordersCache.filter(o=>o.status==='pendente').length;
     document.getElementById('finStats').innerHTML = `
       <div class="stat"><div class="num">${total}</div><div class="lbl">Pedidos totais</div></div>
       <div class="stat"><div class="num">${concluidos}</div><div class="lbl">Concluídos</div></div>
       <div class="stat"><div class="num">${pendentes}</div><div class="lbl">Pendentes</div></div>
     `;
-    const list = document.getElementById('finOrdersList');
-    if(orders.length===0){
-      list.innerHTML = '<div class="empty-state">Nenhum pedido registrado ainda.</div>';
+
+    const list = document.getElementById('movList');
+    if(movsCache.length===0){
+      list.innerHTML = '<div class="empty-state">Nenhuma movimentação registrada ainda.</div>';
     } else {
-      list.innerHTML = orders.map(o=>`
-        <div class="info-row"><span>${escapeHtml(o.nome)} — ${escapeHtml(o.tipo)}</span><span>${escapeHtml(o.pagamento)} · ${statusLabel(o.status)}</span></div>
+      list.innerHTML = movsCache.map(m=>`
+        <div class="info-row">
+          <span>${m.tipo==='entrada'?'+ Adicionado':'- Retirado'}${m.descricao ? ' · '+escapeHtml(m.descricao) : ''}</span>
+          <span>${brl(m.tipo==='entrada'? m.valor : -m.valor)}</span>
+        </div>
       `).join('');
     }
-    document.getElementById('financeiroOverlay').style.display = 'block';
   }
-  function closeFinanceiro(){ document.getElementById('financeiroOverlay').style.display = 'none'; }
-
-  // ---------- PWA: instalar + service worker ----------
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('service-worker.js').catch(() => {});
-    });
-  }
-
-  let deferredInstallPrompt = null;
-  window.addEventListener('beforeinstallprompt', (e) => {
+  window.submitMovimento = async function(e){
     e.preventDefault();
-    deferredInstallPrompt = e;
-    document.getElementById('installBtn').style.display = 'inline-flex';
-  });
-  function installApp(){
-    if(!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    deferredInstallPrompt.userChoice.finally(() => {
-      deferredInstallPrompt = null;
-      document.getElementById('installBtn').style.display = 'none';
+    if(!firebaseReady){ alert('Backend não conectado ainda.'); return; }
+    const fs = window.__fs;
+    const btn = document.getElementById('movSubmitBtn');
+    btn.disabled = true;
+    try{
+      await fs.addDoc(fs.collection(db,'movimentos'), {
+        tipo: document.getElementById('movTipo').value,
+        valor: parseFloat(document.getElementById('movValor').value) || 0,
+        descricao: document.getElementById('movDescricao').value.trim(),
+        createdAt: fs.serverTimestamp()
+      });
+      document.getElementById('movForm').reset();
+    }catch(err){
+      console.error(err);
+      alert('Não foi possível registrar a movimentação.');
+    }finally{
+      btn.disabled = false;
+    }
+  }
+  window.openFinanceiro = function(){
+    renderFinanceiro();
+    document.getElementById('financeiroOverlay').classList.add('open');
+  }
+  window.closeFinanceiro = function(){ document.getElementById('financeiroOverlay').classList.remove('open'); }
+
+  // ---------- LISTENERS EM TEMPO REAL ----------
+  function startListeners(){
+    const fs = window.__fs;
+
+    fs.onSnapshot(fs.doc(db,'config','creditos'), (snap)=>{
+      if(snap.exists()){
+        const d = snap.data();
+        currentCredits = { contribuidores: d.contribuidores || currentCredits.contribuidores, deckers: d.deckers || currentCredits.deckers };
+        renderCredits();
+      }
+    }, (err)=>console.error(err));
+
+    const pedidosQ = fs.query(fs.collection(db,'pedidos'), fs.orderBy('createdAt','desc'));
+    fs.onSnapshot(pedidosQ, (snap)=>{
+      ordersCache = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+      if(document.getElementById('sistemaOverlay').classList.contains('open')) renderOrdersList();
+      if(document.getElementById('financeiroOverlay').classList.contains('open')) renderFinanceiro();
+    }, (err)=>console.error(err));
+
+    const movsQ = fs.query(fs.collection(db,'movimentos'), fs.orderBy('createdAt','desc'));
+    fs.onSnapshot(movsQ, (snap)=>{
+      movsCache = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+      if(document.getElementById('financeiroOverlay').classList.contains('open')) renderFinanceiro();
+    }, (err)=>console.error(err));
+  }
+
+  renderCredits();
+  initFirebase();
+
+  // ---------- PWA: registra o service worker ----------
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('./service-worker.js').catch(err=>console.error('SW falhou:', err));
     });
   }
-  window.addEventListener('appinstalled', () => {
-    document.getElementById('installBtn').style.display = 'none';
-  });
 </script>
 </body>
 </html>

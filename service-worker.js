@@ -1,19 +1,15 @@
-// Troque este número toda vez que atualizar o site,
-// para forçar os aparelhos já instalados a buscar a versão nova.
 const CACHE_NAME = 'lojinha-do-perigo-v1';
-
-const APP_SHELL = [
+const ASSETS = [
   './',
   './index.html',
   './manifest.json',
   './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/apple-touch-icon.png'
+  './icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
   self.skipWaiting();
 });
@@ -27,20 +23,25 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Estratégia: tenta a rede primeiro (pra pegar atualizações), cai pro
-// cache se estiver offline. Só cacheia pedidos do próprio site.
+// Só cacheia arquivos do próprio site (o app-shell).
+// Chamadas ao Firebase/Firestore são deixadas passar direto pela rede,
+// já que os dados precisam estar sempre atualizados entre dispositivos.
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
-  const isSameOrigin = event.request.url.startsWith(self.location.origin);
-  if (!isSameOrigin) return;
+
+  const url = new URL(event.request.url);
+  if (url.origin !== location.origin) return;
 
   event.respondWith(
-    fetch(event.request)
-      .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return response;
-      })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+      return fetch(event.request)
+        .then((resp) => {
+          const clone = resp.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          return resp;
+        })
+        .catch(() => caches.match('./index.html'));
+    })
   );
 });
